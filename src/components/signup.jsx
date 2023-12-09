@@ -1,21 +1,18 @@
 import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import axios from 'axios'
+import axios from 'axios';
 
-
-
-const defaultTheme = createTheme();
+const theme = createTheme();
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -28,7 +25,7 @@ export default function SignUp() {
       username: formData.get('username'),
       email: formData.get('email'),
       password: formData.get('password'),
-      cpassword: formData.get('cpassword')
+      cpassword: formData.get('cpassword'),
     };
 
     if (!user.username || !user.email || !user.password || !user.cpassword) {
@@ -47,39 +44,47 @@ export default function SignUp() {
       return;
     }
 
-    axios.post('http://localhost:8081/signup',user)
-    .then((res) => navigate('/login'))
-    .catch(err=> alert(err.response.data))
-
-    // //console.log(user);
+    axios
+      .post('http://localhost:8081/signup', user)
+      .then((res) => navigate('/login'))
+      .catch((err) => alert(err.response.data));
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: theme.spacing(8),
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            padding: theme.spacing(4),
+            borderRadius: theme.spacing(2),
+            backgroundColor: '#fff',
+            boxShadow: '0px 5px 15px rgba(0, 0, 0, 0.1)',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: theme.spacing(1), bgcolor: theme.palette.secondary.main }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h5" sx={{ marginBottom: theme.spacing(2) }}>
             Sign up
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ width: '100%', '& > :not(style)': { marginBottom: theme.spacing(2) } }}
+          >
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
                   id="username"
-                  label="UserName"
+                  label="Username"
                   name="username"
                   autoComplete="username"
                 />
@@ -117,17 +122,12 @@ export default function SignUp() {
                 />
               </Grid>
             </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Sign Up
             </Button>
             <Grid container justifyContent="center">
               <Grid item>
-                <Link href="/" variant="body2">
+                <Link to="/login" variant="body2" style={{ textDecoration: 'none' }}>
                   Already have an account? Login
                 </Link>
               </Grid>
